@@ -1,0 +1,41 @@
+{
+  "name": "twitter-bot",
+  "version": "0.1.0",
+  "description": "Twitter bot for retweet, follow and unfollow",
+  "author": "Andras Serfozo <subztep@gmail.com>",
+  "license": "UNLICENSED",
+  "scripts": {
+    "watch": "tsc -w",
+    "build": "tsc -b",
+    "bot": "node dist/main.js",
+    "show": "node dist/show_search.js",
+    "lint": "eslint ./src/**/*.ts",
+    "lint:fix": "tsc --noEmit && eslint ./src/**/*.ts --fix",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "flat-cache": "^2.0.1",
+    "twit": "^2.2.11"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.7",
+    "@types/flat-cache": "^2.0.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^13.1.0",
+    "@types/twit": "^2.2.23",
+    "@typescript-eslint/eslint-plugin": "^2.13.0",
+    "@typescript-eslint/parser": "^2.13.0",
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-security": "^1.4.0",
+    "mocha": "^6.2.2",
+    "nock": "^11.7.0",
+    "prettier": "^1.19.1",
+    "ts-node": "^8.5.4",
+    "typescript": "^3.7.4"
+  }
+}

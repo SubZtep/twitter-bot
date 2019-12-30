@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist",
+    "sourceMap": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "lib": ["ES2017", "DOM"],
+    "types": ["chai", "mocha", "node", "twit"]
+  },
+  "include": ["./src"]
+}
