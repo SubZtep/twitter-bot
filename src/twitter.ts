@@ -5,7 +5,6 @@ config()
 const T = new Twit({
   consumer_key: process.env.API_KEY,
   consumer_secret: process.env.API_SECRET_KEY,
-  //app_only_auth: true
   access_token: process.env.API_ACCESS_TOKEN,
   access_token_secret: process.env.API_ACCESS_TOKEN_SECRET
 } as Twit.Options)
@@ -14,6 +13,7 @@ const T = new Twit({
  * Perform a safe keyword search in English
  * @param keywords List of search words
  * @param blacklist List of ignored search words
+ * @param since Returns results with an ID greater than specified
  */
 export const search = (
   keywords: string[],
@@ -62,17 +62,24 @@ export const search = (
  */
 export const followers = (user: string): Promise<string[]> => {
   return new Promise((resolve, reject) => {
-    T.get("followers/ids", { screen_name: user }, (err, res) => {
-      if (err) {
-        reject(err)
+    T.get(
+      "followers/ids",
+      {
+        screen_name: user,
+        stringify_ids: true
+      },
+      (err, res) => {
+        if (err) {
+          reject(err)
+        }
+        // @ts-ignore
+        const ids = res?.ids as string[]
+        if (!ids) {
+          reject("Invalid response")
+        }
+        resolve(ids)
       }
-      // @ts-ignore
-      const ids = res?.ids as string[]
-      if (!ids) {
-        reject("Invalid response")
-      }
-      resolve(ids)
-    })
+    )
   })
 }
 
@@ -82,17 +89,24 @@ export const followers = (user: string): Promise<string[]> => {
  */
 export const following = (user: string): Promise<string[]> => {
   return new Promise((resolve, reject) => {
-    T.get("friends/ids", { screen_name: user }, (err, res) => {
-      if (err) {
-        reject(err)
+    T.get(
+      "friends/ids",
+      {
+        screen_name: user,
+        stringify_ids: true
+      },
+      (err, res) => {
+        if (err) {
+          reject(err)
+        }
+        // @ts-ignore
+        const ids = res?.ids as string[]
+        if (!ids) {
+          reject("Invalid response")
+        }
+        resolve(ids)
       }
-      // @ts-ignore
-      const ids = res?.ids as string[]
-      if (!ids) {
-        reject("Invalid response")
-      }
-      resolve(ids)
-    })
+    )
   })
 }
 
@@ -106,7 +120,7 @@ export const retweet = (id: string) => {
       if (err) {
         reject(err)
       }
-      console.log("Retweet", [data, response])
+      // console.log("Retweet", [data, response])
       resolve()
     })
   })
