@@ -20,11 +20,12 @@
 
 ## Workflow
 
-1. Search for tweets
-2. Retweet
-3. Retreive followed/follower users
-4. Follow who is following
-5. Unfollow who is not following
+1. Retreive followed/follower users
+2. Search for tweets
+3. Confirm the found tweet is from a follower
+4. Retweet
+5. Follow who is following
+6. Unfollow who is not following
 
 ## Cache
 
