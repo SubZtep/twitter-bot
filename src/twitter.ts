@@ -116,11 +116,10 @@ export const following = (user: string): Promise<string[]> => {
  */
 export const retweet = (id: string) => {
   return new Promise((resolve, reject) => {
-    T.post("statuses/retweet/:id", { id }, (err, data, response) => {
+    T.post("statuses/retweet/:id", { id }, err => {
       if (err) {
         reject(err)
       }
-      // console.log("Retweet", [data, response])
       resolve()
     })
   })

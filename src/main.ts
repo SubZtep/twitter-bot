@@ -11,7 +11,11 @@ const main = async () => {
 
   const followers = await twitter.followers(process.env.SCREEN_NAME as string)
   const following = await twitter.following(process.env.SCREEN_NAME as string)
-  const tweets = await twitter.search(retweet(), blacklist(), cache.getKey("since_id"))
+  const tweets = await twitter.search(
+    retweet(),
+    blacklist(),
+    cache.getKey("since_id")
+  )
   if (tweets.length) {
     cache.setKey("since_id", tweets[0].id_str)
     cache.save()
