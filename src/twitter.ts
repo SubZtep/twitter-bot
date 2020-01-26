@@ -13,12 +13,12 @@ const T = new Twit({
  * Perform a safe keyword search in English
  * @param keywords List of search words
  * @param blacklist List of ignored search words
- * @param since Returns results with an ID greater than specified
+ * @param since_id Returns results with an ID greater than specified
  */
 export const search = (
   keywords: string[],
   blacklist: string[],
-  since?: string
+  since_id?: string
 ): Promise<Twit.Twitter.Status[]> => {
   return new Promise((resolve, reject) => {
     // Search descrition:
@@ -38,9 +38,9 @@ export const search = (
       lang: "en",
       include_entities: false,
       exclude_replies: true,
-      include_user_entities: false
+      include_user_entities: false,
+      since_id
     }
-    if (since) searchParams.since_id = since
 
     T.get("search/tweets", searchParams, (err, res) => {
       if (err) {
