@@ -101,7 +101,19 @@ const main = async () => {
       })
   })
 
-  console.log(chalk.grey(util.fdate()) + "\n―\n")
+  console.log(chalk.grey(util.fdate()) + `\n`)
 }
+;(() => {
+  const intMin = parseInt(process.env.JOB_INTERVAL_MIN as string, 10)
+  console.log(
+    "Job interval: ",
+    chalk.cyan(`every ${intMin} min${intMin > 1 ? "s" : ""}`)
+  )
+  console.log(
+    "Twitter handle: ",
+    chalk.cyan((process.env.SCREEN_NAME as string) + `\n`)
+  )
 
-main()
+  setInterval(main, intMin * 60 * 1000)
+  main()
+})()
