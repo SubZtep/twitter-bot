@@ -9,6 +9,11 @@ const T = new Twit({
   access_token_secret: process.env.API_ACCESS_TOKEN_SECRET
 } as Twit.Options)
 
+export const ERROR_CODE = {
+  ALREADY_RETWEETED: 327,
+  OVER_UPDATE_LIMIT: 185
+} as const
+
 /**
  * Perform a safe keyword search in English
  * @param keywords List of search words
@@ -126,6 +131,21 @@ export const retweet = (id: string) => {
 }
 
 /**
+ * Tweet a status text
+ * @param status Tweet content
+ */
+export const tweet = (status: string) => {
+  return new Promise((resolve, reject) => {
+    T.post("statuses/update", { status }, err => {
+      if (err) {
+        reject(err)
+      }
+      resolve()
+    })
+  })
+}
+
+/**
  * Follow specified user
  */
 export const follow = (id: string) => {
@@ -149,6 +169,20 @@ export const unfollow = (id: string) => {
         reject(err)
       }
       resolve()
+    })
+  })
+}
+
+/**
+ * Rate limit for read endpoints
+ */
+export const rateLimit = () => {
+  return new Promise((resolve, reject) => {
+    T.get("application/rate_limit_status", (err, res) => {
+      if (err) {
+        reject(err)
+      }
+      resolve((res as any).resources)
     })
   })
 }

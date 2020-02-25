@@ -16,6 +16,7 @@ module.exports = {
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/camelcase": "off",
-    "security/detect-non-literal-fs-filename": "off"
+    "security/detect-non-literal-fs-filename": "off",
+    "@typescript-eslint/no-explicit-any": "off"
   }
 }
