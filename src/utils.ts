@@ -15,13 +15,19 @@ export const toUnfollow = (
 /**
  * Current formatted date and time
  */
-export const fdate = () =>
-  new Intl.DateTimeFormat("default", {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-    hour12: false
-  }).format()
+export const fdate = () => {
+  const date = new Date()
+  return (
+    new Intl.DateTimeFormat("default", {
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false
+    }).format(date) +
+    "." +
+    date.getMilliseconds()
+  )
+}
