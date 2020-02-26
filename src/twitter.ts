@@ -2,7 +2,7 @@ import Twit from "twit"
 import { config } from "dotenv"
 config()
 
-const T = new Twit({
+export const T = new Twit({
   consumer_key: process.env.API_KEY,
   consumer_secret: process.env.API_SECRET_KEY,
   access_token: process.env.API_ACCESS_TOKEN,
@@ -183,6 +183,25 @@ export const rateLimit = () => {
         reject(err)
       }
       resolve((res as any).resources)
+    })
+  })
+}
+
+export const deleteTweet = (id: string) => {
+  return new Promise((resolve, reject) => {
+    T.post("statuses/destroy", {id}, err => {
+      if (err) reject(err)
+      resolve()
+    })
+  })
+}
+
+
+export const timeline = (user: string) => {
+  return new Promise((resolve, reject) => {
+    T.get("statuses/user_timeline", { screen_name: user }, (res, err) => {
+      if (err) reject(err)
+      resolve(res)
     })
   })
 }
