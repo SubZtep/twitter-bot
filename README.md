@@ -17,7 +17,7 @@ This bot helps to automatize a Twitter account follows and retweets.
 2. Go to [Twitter Developer](https://developer.twitter.com/en/apps) page, authenticate, and create an app for API keys.
 3. Uncompress or clone from GIT the project.
 4. Run `npm install` to make all the dependencies available.
-5. Create a copy from `.env.example` to `.env` where environment variables stored. Populate `API_KEY`, `API_SECRET_KEY`, `API_ACCESS_TOKEN` and `API_ACCESS_TOKEN_SECRET` with generated values from the developer page. `SCREEN_NAME` is your Twitter handle.
+5. Create a copy from `.env.example` to `.env` where environment variables stored. Populate `API_KEY`, `API_SECRET_KEY`, `API_ACCESS_TOKEN` and `API_ACCESS_TOKEN_SECRET` with generated values from the developer page. `SCREEN_NAME` is your Twitter handle. `JOB_INTERVAL_MIN` is running interval.
 6. On Linux or Mac environment make `/cache` folder writable.
 7. Open `retweet.txt` and populate with words or expressions which tempted to be followed. Every new word supposed to be in a new line. Enter multiple words in the same row for search for the exact word pairs.
 8. Open `blacklist.txt` which contains the phrases to ignore with the same rules above.

@@ -121,6 +121,7 @@ export const following = (user: string): Promise<string[]> => {
  */
 export const retweet = (id: string) => {
   return new Promise((resolve, reject) => {
+    // @ts-ignore
     T.post("statuses/retweet/:id", { id }, err => {
       if (err) {
         reject(err)
@@ -183,25 +184,6 @@ export const rateLimit = () => {
         reject(err)
       }
       resolve((res as any).resources)
-    })
-  })
-}
-
-export const deleteTweet = (id: string) => {
-  return new Promise((resolve, reject) => {
-    T.post("statuses/destroy", {id}, err => {
-      if (err) reject(err)
-      resolve()
-    })
-  })
-}
-
-
-export const timeline = (user: string) => {
-  return new Promise((resolve, reject) => {
-    T.get("statuses/user_timeline", { screen_name: user }, (res, err) => {
-      if (err) reject(err)
-      resolve(res)
     })
   })
 }

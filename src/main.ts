@@ -16,101 +16,92 @@ const main = async () => {
   let spinner = ora("Retrieve followers").start()
   const followers: string[] = await twitter
     .followers(process.env.SCREEN_NAME as string)
-    .then(res => {
-      spinner.succeed()
-      return res
-    })
     .catch(err => {
       spinner.fail()
       console.log(error(err.message))
       return []
     })
+  if (spinner.isSpinning) {
+    spinner.succeed()
+  }
 
   spinner = ora("Retrieve following list").start()
   const following: string[] = await twitter
     .following(process.env.SCREEN_NAME as string)
-    .then(res => {
-      spinner.succeed()
-      return res
-    })
     .catch(err => {
       spinner.fail()
       console.log(error(err.message))
       return []
     })
+  if (spinner.isSpinning) {
+    spinner.succeed()
+  }
 
   spinner = ora("Search for tweets to retweet").start()
   const tweets: Twit.Twitter.Status[] = await twitter
     .search(retweet(), blacklist(), cache.getKey("since_id"))
-    .then(res => {
-      spinner[res.length > 0 ? "succeed" : "warn"]()
-      return res
-    })
     .catch(err => {
       spinner.fail()
       console.log(error(err.message))
       return []
     })
+  if (spinner.isSpinning) {
+    spinner[tweets.length > 0 ? "succeed" : "info"]()
+  }
 
-  let rateLimitExceeded = false
   for (const tweet of tweets) {
     if (followers.includes(tweet.user.id_str)) {
       const link = `https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`
       spinner = ora(`Retweet ${chalk.blue(link)}`)
-
-      await twitter
-        .retweet(tweet.id_str)
-        .then(() => {
-          cache.setKey("since_id", tweets[0].id_str)
-          cache.save()
-          spinner.succeed()
-        })
-        .catch(err => {
-          console.log(error(err.message))
-          spinner.fail()
-          if (err.code === twitter.ERROR_CODE.OVER_UPDATE_LIMIT) {
-            rateLimitExceeded = true
-          }
-        })
-
-      if (rateLimitExceeded) {
-        break
+      try {
+        await twitter.retweet(tweet.id_str)
+        cache.setKey("since_id", tweets[0].id_str)
+        cache.save()
+        spinner.succeed()
+      } catch (err) {
+        console.log(error(err.message))
+        spinner.fail()
+        if (err.code === twitter.ERROR_CODE.OVER_UPDATE_LIMIT) {
+          break
+        }
       }
     }
   }
 
-  util.toFollow(followers, following).forEach(async id => {
-    spinner = ora(`Follow ${chalk.call(id)}`).start()
-    await twitter
-      .follow(id)
-      .then(() => spinner.succeed())
-      .catch(err => {
-        spinner.fail()
-        console.log(error(err.message))
-      })
-  })
+  for (const id of util.toFollow(followers, following)) {
+    const link = `https://twitter.com/i/user/${id}`
+    spinner = ora(`Follow ${chalk.blue(link)}`).start()
+    await twitter.follow(id).catch(err => {
+      spinner.fail()
+      console.log(error(err.message))
+    })
+    if (spinner.isSpinning) {
+      spinner.succeed()
+    }
+  }
 
-  util.toUnfollow(followers, following).forEach(async id => {
-    spinner = ora(`Unfollow ${chalk.call(id)}`).start()
-    await twitter
-      .unfollow(id)
-      .then(() => spinner.succeed())
-      .catch(err => {
-        spinner.fail()
-        console.log(error(err.message))
-      })
-  })
+  for (const id of util.toUnfollow(followers, following)) {
+    const link = `https://twitter.com/i/user/${id}`
+    spinner = ora(`Unfollow ${chalk.blue(link)}`).start()
+    await twitter.unfollow(id).catch(err => {
+      spinner.fail()
+      console.log(error(err.message))
+    })
+    if (spinner.isSpinning) {
+      spinner.succeed()
+    }
+  }
 
   console.log(chalk.grey(util.fdate()) + `\n`)
 }
 ;(() => {
   const intMin = parseInt(process.env.JOB_INTERVAL_MIN as string, 10)
   console.log(
-    "Job interval: ",
+    "Job interval:",
     chalk.cyan(`every ${intMin} min${intMin > 1 ? "s" : ""}`)
   )
   console.log(
-    "Twitter handle: ",
+    "Twitter handle:",
     chalk.cyan((process.env.SCREEN_NAME as string) + `\n`)
   )
 

@@ -1,6 +1,6 @@
 {
   "name": "twitter-bot",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Twitter bot for retweet, follow and unfollow",
   "author": "Andras Serfozo <subztep@gmail.com>",
   "license": "UNLICENSED",
@@ -8,12 +8,12 @@
     "watch": "tsc -w",
     "build": "tsc -b",
     "bot": "node dist/main.js",
+    "bot:ts": "ts-node src/main.ts",
     "show": "node dist/show_search.js",
-    "delete_tweet": "node dist/delete_tweets.js",
     "lint": "eslint ./src/**/*.ts",
     "lint:fix": "tsc --noEmit && eslint ./src/**/*.ts --fix",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register test/**/*.spec.ts",
-    "wipe": "npx rimraf node_modules dist cache package-lock.json"
+    "wipe": "npx rimraf node_modules dist package-lock.json"
   },
   "dependencies": {
     "chalk": "^3.0.0",
@@ -26,7 +26,7 @@
     "@types/chai": "^4.2.9",
     "@types/flat-cache": "^2.0.0",
     "@types/mocha": "^7.0.1",
-    "@types/node": "^13.7.6",
+    "@types/node": "^13.7.7",
     "@types/twit": "^2.2.23",
     "@typescript-eslint/eslint-plugin": "^2.21.0",
     "@typescript-eslint/parser": "^2.21.0",
@@ -40,6 +40,6 @@
     "nock": "^12.0.1",
     "prettier": "^1.19.1",
     "ts-node": "^8.6.2",
-    "typescript": "^3.8.2"
+    "typescript": "^3.8.3"
   }
 }
